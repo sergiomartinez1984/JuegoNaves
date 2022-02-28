@@ -5,8 +5,15 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.LinkedList;
+
+import actor.Laser;
+import actor.Ship;
 
 class GameScreen implements Screen {
 
@@ -16,11 +23,16 @@ class GameScreen implements Screen {
 
     //graphics
     private final SpriteBatch batch;
-    //private Texture background
-    private Texture[] background;
+    private TextureAtlas textureAtlas;
+    private TextureRegion[] background;
+    private float backgroundHeight;
+
+    private TextureRegion playerShipTextureRegion,playerShieldTextureRegion,
+    enemyShipTextureRegion,enemyShieldTextureRegion,
+    playerLaserTextureRegion,enemyLaserTextureRegion;
+
 
     //Timing
-    //private int backgroundOffSet;
     private float[] backgroundOffSet = {0,0,0,0};
     private float backgroundMaxScrollingSpeed;
 
@@ -30,21 +42,53 @@ class GameScreen implements Screen {
     private final int WORLD_HEIGHT = 128;
 
 
+    //Objetos del juego
+    private Ship playerShip;
+    private Ship enemyShip;
+    private LinkedList<Laser>playerLaserList;
+    private LinkedList<Laser>enemyLaserList;
+
+
     GameScreen(){
 
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
 
-    //    background = new Texture("fondoespacio.png");
-    //    backgroundOffSet = 0;
+        //configuracion del texture Atlas
+        textureAtlas = new TextureAtlas("images.atlas");
 
-        background = new Texture[4];
-        background[0] = new Texture("fondoespacio00.png");
-        background[1] = new Texture("fondoespacio01.png");
-        background[2] = new Texture("fondoespacio02.png");
-        background[3] = new Texture("fondoespacio03.png");
+        //Ajustes del fondo
+        background = new TextureRegion[4];
+        background[0] = textureAtlas.findRegion("fondoespacio00");
+        background[1] = textureAtlas.findRegion("fondoespacio01");
+        background[2] = textureAtlas.findRegion("fondoespacio02");
+        background[3] = textureAtlas.findRegion("fondoespacio03");
 
+        backgroundHeight = WORLD_HEIGHT * 2;
         backgroundMaxScrollingSpeed = (float) WORLD_HEIGHT / 4;
+
+
+        //Inicializar las regiones de texturas
+
+        playerShipTextureRegion = textureAtlas.findRegion("playerShip2_blue");
+        enemyShipTextureRegion = textureAtlas.findRegion("enemyBlack1");
+        playerShieldTextureRegion = textureAtlas.findRegion("shield1");
+        enemyShieldTextureRegion = textureAtlas.findRegion("shield2");
+        playerLaserTextureRegion = textureAtlas.findRegion("laserBlue13");
+        enemyLaserTextureRegion = textureAtlas.findRegion("laserRed02");
+
+
+        //Configuracion de objetos del juego
+        playerShip = new Ship(2,3,10,10,
+                        WORLD_WIDTH/2,WORLD_HEIGHT/4,
+                playerShipTextureRegion,playerShieldTextureRegion,playerLaserTextureRegion);
+        enemyShip = new Ship(2,1,10,10,
+                WORLD_WIDTH/2,WORLD_HEIGHT*3/4,
+                enemyShipTextureRegion,enemyShieldTextureRegion,enemyLaserTextureRegion);
+
+        playerLaserList = new LinkedList<>();
+        enemyLaserList = new LinkedList<>();
+
 
         batch = new SpriteBatch();
     }
@@ -59,8 +103,32 @@ class GameScreen implements Screen {
         //scroll background
         renderBackground(deltaTime);
 
+        //naves enemigas
+        enemyShip.draw(batch);
+
+        //nave jugador
+        playerShip.draw(batch);
+
+        //disparos laser
+
+
+
+        //explosiones
+
+
+
+
+
+
+
+
         batch.end();
     }
+
+
+
+
+
 
     private void renderBackground(float deltaTime){
 
@@ -74,12 +142,8 @@ class GameScreen implements Screen {
             if (backgroundOffSet[layer] > WORLD_HEIGHT){
                 backgroundOffSet[layer] = 0;
             }
-            batch.draw(background[layer],
-                    0,-backgroundOffSet[layer],
-                    WORLD_WIDTH,WORLD_HEIGHT);
-            batch.draw(background[layer],
-                    0,-backgroundOffSet[layer]+WORLD_HEIGHT,
-                    WORLD_WIDTH,WORLD_HEIGHT);
+            batch.draw(background[layer],0, -backgroundOffSet[layer],
+                    WORLD_WIDTH,backgroundHeight);
         }
     }
 
