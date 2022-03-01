@@ -2,8 +2,17 @@ package actor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+
+import screens.Spaceship;
 
 public class EnemyShip extends Ship{
+
+    Vector2 directionVector;
+    float timeSinceLastDirectionChange = 0;
+    float directionChangeFrequency = 0.75f;
+
+
 
 
     public EnemyShip(float xCentre, float yCentre, float width,
@@ -13,6 +22,29 @@ public class EnemyShip extends Ship{
                       TextureRegion shieldTextureRegion,
                       TextureRegion laserTextureRegion) {
         super(xCentre, yCentre, width, height, movementSpeed, shield, laserWidth, laserHeight, laserMovementSpeed, timeBetweenShot, shipTextureRegion, shieldTextureRegion, laserTextureRegion);
+        directionVector = new Vector2(0,-1);
+    }
+
+    public Vector2 getDirectionVector() {
+        return directionVector;
+    }
+    //creamos un metodo de direccion del vector aleatorio privado,porque solo se llamara desde el metodo de actualizacion
+
+    private void randomizeDirectionVector(){
+        double rumbo = Spaceship.random.nextDouble()*6.283185;// DE 0 A 2 veces PI
+        directionVector.x = (float)Math.sin(rumbo);
+        directionVector.y = (float)Math.cos(rumbo);
+
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        timeSinceLastDirectionChange += deltaTime;
+        if(timeSinceLastDirectionChange > directionChangeFrequency){
+            randomizeDirectionVector();
+            timeSinceLastDirectionChange -= directionChangeFrequency;
+        }
     }
 
     @Override

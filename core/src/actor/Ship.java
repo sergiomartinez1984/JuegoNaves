@@ -10,12 +10,12 @@ abstract public class Ship {
     //utilizamos medidas del mundo * segundo,en metros,asi no tenemos que preocuparnos por el tamaño de la pantalla para los calculos
     //tambien utilizo una varieable int escudo para saber cuanta cantidad de escudo le  queda a la nave
 
-    float movementSpeed;
+    public float movementSpeed;
     int shield;
 
     //posicion y dimension de la nave
     //ancho y alto de la nave, y la posicion de la nave con las coordenadas X e Y
-    Rectangle boundingBox;
+    public Rectangle boundingBox;
 
     //informacion del Laser
     float laserWidth, laserHeight;
@@ -68,6 +68,9 @@ abstract public class Ship {
         }
     }
 
+    public void translate(float xChange,float yChange){
+        boundingBox.setPosition(boundingBox.x + xChange,boundingBox.y + yChange);
+    }
 
     public void draw(Batch batch){
         batch.draw(shipTextureRegion,boundingBox.x,boundingBox.y,boundingBox.width,boundingBox.height);
