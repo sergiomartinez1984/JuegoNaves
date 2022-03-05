@@ -61,11 +61,15 @@ abstract public class Ship {
 
         return boundingBox.overlaps(otherRectangle);
     }
-
-    public void hit(Laser laser){
+    //metodo que se encarga de verificar si un laser golpeo a la nave y ya no le queda escudo,
+    // la nave es desturida y por lo tanto salta la animacion de explosion
+    //este metodo al estar en la clase nave,sirve tanto par la clase nave jugador como para las naves enemigas,que son subclases
+    public boolean hitDetectAndDestroy(Laser laser){
         if (shield > 0){
             shield --;
+            return false;
         }
+        return true;
     }
 
     public void translate(float xChange,float yChange){

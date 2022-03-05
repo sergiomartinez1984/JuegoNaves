@@ -5,9 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -18,18 +21,24 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import actor.EnemyShip;
+import actor.Explosion;
 import actor.Laser;
 import actor.PlayerShip;
 
 class GameScreen implements Screen {
 
-    //Screen
+    //declaraciones de todas las variables,de las distintas partes del juego
+
+    //pantalla del juego
     private final Camera camera;
     private final Viewport viewport;
 
-    //graphics
+    //graficos
     private final SpriteBatch batch;
     private TextureAtlas textureAtlas;
+    private Texture explosionTexture;
+
+
     private TextureRegion[] background;
     private float backgroundHeight;
 
@@ -38,25 +47,32 @@ class GameScreen implements Screen {
     playerLaserTextureRegion,enemyLaserTextureRegion;
 
 
-    //Timing
+    //Tiempo
     private float[] backgroundOffSet = {0,0,0,0};
     private float backgroundMaxScrollingSpeed;
-    private float timeBetweenEnemySpawns = 3f;
+    private float timeBetweenEnemySpawns = 2f;
     private float enemySpawnTimer = 0;
 
 
-    //World
+    //Mundo
     private final int WORLD_WIDTH = 72;
     private final int WORLD_HEIGHT = 128;
-    private final float TOUCH_MOVEMENT = 0.5f;
+    private final float TOUCH_MOVEMENT = 5f;
 
 
-    //Objetos del juego
+    //Objetos del juego , y listas vinculadas de los enemigos,los laser y las explosiones,con esto nos evitamos tener por ejemplo en las explosiones
+    //multiples explosiones en el fondo,por eso se enlaza la lista al objeto explosiones
     private PlayerShip playerShip;
     private LinkedList<EnemyShip> enemyShipList;
     private LinkedList<Laser>playerLaserList;
     private LinkedList<Laser>enemyLaserList;
+    private LinkedList<Explosion>explosionsList;
 
+    private int score = 0;
+
+    //cabeceras para el texto de la puntuacion y demas
+    BitmapFont font;
+    float margilVertical,hudLeftX,hudRightX,hudCentreX,hudRow1y,hudRow2y,hudSectionWidth;
 
     GameScreen(){
 
@@ -77,7 +93,7 @@ class GameScreen implements Screen {
         backgroundMaxScrollingSpeed = (float) WORLD_HEIGHT / 4;
 
 
-        //Inicializar las regiones de texturas
+        //Inicializar las regiones de texturas del fondo
 
         playerShipTextureRegion = textureAtlas.findRegion("playerShip2_blue");
         enemyShipTextureRegion = textureAtlas.findRegion("enemyBlack1");
@@ -86,25 +102,37 @@ class GameScreen implements Screen {
         playerLaserTextureRegion = textureAtlas.findRegion("laserBlue13");
         enemyLaserTextureRegion = textureAtlas.findRegion("laserRed02");
 
+        explosionTexture = new Texture("explosion.png");
 
         //Configuracion de objetos del juego
         playerShip = new PlayerShip(WORLD_WIDTH/2,WORLD_HEIGHT/4,
                 10,10,
-                48,3,
+                48,10,
                 0.8f,4,65,0.5f,
                 playerShipTextureRegion,playerShieldTextureRegion,playerLaserTextureRegion);
 
+
         enemyShipList = new LinkedList<>();
-
-
         playerLaserList = new LinkedList<>();
         enemyLaserList = new LinkedList<>();
-
+        explosionsList = new LinkedList<>();
 
         batch = new SpriteBatch();
 
+
+
     }
 
+    private void prepareHUD() {
+        //Primero creamos una fuente de mapa de bits
+
+
+        //Escalar tamaño de la fuente para adaptarse al mundo
+
+
+        //Calcular los margenes del HUD
+
+    }
 
 
 
@@ -150,7 +178,7 @@ class GameScreen implements Screen {
             enemyShipList.add(new EnemyShip(Spaceship.random.nextFloat() * (WORLD_WIDTH - 10) + 5,
                     WORLD_HEIGHT - 5,
                     10, 10,
-                    48, 1,
+                    48, 2,
                     0.3f, 5, 50, 0.8f,
                     enemyShipTextureRegion, enemyShieldTextureRegion, enemyLaserTextureRegion));
             enemySpawnTimer -= timeBetweenEnemySpawns;
@@ -248,9 +276,15 @@ class GameScreen implements Screen {
 
                 if (enemyShip.intersects(laser.boundingBox)) {
                     //contacto con la nave enemiga
-                    enemyShip.hit(laser);
-                    laserListIterator.remove();
-                    break;
+                   if(enemyShip.hitDetectAndDestroy(laser)) {
+                        enemyShipListIterator.remove();
+                        explosionsList.add(
+                                new Explosion(explosionTexture,
+                                        new Rectangle(enemyShip.boundingBox),
+                                        0.7f));
+                   }
+                       laserListIterator.remove();
+                       break;
                  }
             }
         }
@@ -261,7 +295,12 @@ class GameScreen implements Screen {
             Laser laser = laserListIterator.next();
             if (playerShip.intersects(laser.boundingBox)){
                 //contacto con la nave jugador
-                playerShip.hit(laser);
+                if (playerShip.hitDetectAndDestroy(laser)){
+                    explosionsList.add(
+                            new Explosion(explosionTexture,
+                                    new Rectangle(playerShip.boundingBox),
+                                    1.6f));
+                };
                 laserListIterator.remove();
             }
         }
@@ -269,7 +308,16 @@ class GameScreen implements Screen {
     }
 
     private void renderExplosions(float deltaTime){
-
+        ListIterator<Explosion>explosionListIterator = explosionsList.listIterator();
+        while (explosionListIterator.hasNext()){
+            Explosion explosion = explosionListIterator.next();
+            explosion.update(deltaTime);
+            if (explosion.isFinished()) {
+                explosionListIterator.remove();
+            }else {
+                explosion.draw(batch);
+            }
+        }
 
     }
 
