@@ -4,14 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -19,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import actor.EnemyShip;
 import actor.Explosion;
@@ -55,8 +59,8 @@ class GameScreen implements Screen {
 
 
     //Mundo
-    private final int WORLD_WIDTH = 72;
-    private final int WORLD_HEIGHT = 128;
+    protected final float WORLD_WIDTH = 72;
+    protected final float WORLD_HEIGHT = 128;
     private final float TOUCH_MOVEMENT = 5f;
 
 
@@ -119,19 +123,32 @@ class GameScreen implements Screen {
 
         batch = new SpriteBatch();
 
-
+        prepareHUD();
 
     }
-
+    //metodo
     private void prepareHUD() {
-        //Primero creamos una fuente de mapa de bits
+        //Primero creamos una fuente de mapa de bits,
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/EdgeOfTheGalaxyRegular-OVEa6.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 72;
+        fontParameter.borderWidth = 3.6f;
+        fontParameter.color = new Color(1,1,1,0.3f);
+        fontParameter.borderColor = new Color(0,0,0,0.3f);
 
+        font = fontGenerator.generateFont(fontParameter);
 
         //Escalar tamaño de la fuente para adaptarse al mundo
-
+        font.getData().setScale(0.08f);
 
         //Calcular los margenes del HUD
-
+        margilVertical = font.getCapHeight()/2;
+        hudLeftX = margilVertical;
+        hudRightX = WORLD_WIDTH * 2 / 3 - hudLeftX;
+        hudCentreX = WORLD_WIDTH / 3;
+        hudRow1y = WORLD_HEIGHT - margilVertical;
+        hudRow2y = hudRow1y - margilVertical - font.getCapHeight();
+        hudSectionWidth = WORLD_WIDTH / 3;
     }
 
 
@@ -140,7 +157,6 @@ class GameScreen implements Screen {
     public void render(float deltaTime) {
         batch.begin();
 
-        //scroll background
         renderBackground(deltaTime);
 
         detectImput(deltaTime);
@@ -168,7 +184,21 @@ class GameScreen implements Screen {
 
         renderExplosions(deltaTime);
 
+        updateAndRenderHUD();
+
         batch.end();
+    }
+
+    private void updateAndRenderHUD(){
+        font.draw(batch,"Score",hudLeftX,hudRow1y,hudSectionWidth, Align.left,false);
+        font.draw(batch,"Escudo",hudCentreX,hudRow1y,hudSectionWidth,Align.center,false);
+        font.draw(batch,"Vidas",hudRightX,hudRow1y,hudSectionWidth,Align.right,false);
+
+        //segunda fila de renderiazdo de texto para que coincida con el puntaje
+        font.draw(batch,String.format(Locale.getDefault(),"%06d",score),hudLeftX,hudRow2y,hudSectionWidth,Align.left,false);
+        font.draw(batch,String.format(Locale.getDefault(),"%02d",playerShip.shield),hudCentreX,hudRow2y,hudSectionWidth,Align.center,false);
+        font.draw(batch,String.format(Locale.getDefault(),"%02d",playerShip.lives),hudRightX,hudRow2y,hudSectionWidth,Align.right,false);
+
     }
 
     private void spawnEnemyShips(float deltaTime){
@@ -282,6 +312,7 @@ class GameScreen implements Screen {
                                 new Explosion(explosionTexture,
                                         new Rectangle(enemyShip.boundingBox),
                                         0.7f));
+                        score += 150;
                    }
                        laserListIterator.remove();
                        break;
@@ -300,6 +331,9 @@ class GameScreen implements Screen {
                             new Explosion(explosionTexture,
                                     new Rectangle(playerShip.boundingBox),
                                     1.6f));
+
+                    playerShip.shield = 10;
+                    playerShip.lives --;
                 };
                 laserListIterator.remove();
             }
@@ -364,7 +398,6 @@ class GameScreen implements Screen {
     }
 
     private void renderBackground(float deltaTime){
-
 
         backgroundOffSet[0] += deltaTime * backgroundMaxScrollingSpeed / 8;
         backgroundOffSet[1] += deltaTime * backgroundMaxScrollingSpeed / 4;

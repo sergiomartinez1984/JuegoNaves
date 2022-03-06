@@ -11,7 +11,7 @@ abstract public class Ship {
     //tambien utilizo una varieable int escudo para saber cuanta cantidad de escudo le  queda a la nave
 
     public float movementSpeed;
-    int shield;
+    public int shield;
 
     //posicion y dimension de la nave
     //ancho y alto de la nave, y la posicion de la nave con las coordenadas X e Y
