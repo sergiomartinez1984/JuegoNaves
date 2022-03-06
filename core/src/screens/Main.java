@@ -1,25 +1,24 @@
 package screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.Random;
 
-public class Spaceship extends Game {
+import extra.AssetShip;
+
+public class Main extends Game {
 
 	GameScreen gameScreen;
 
 	public static Random random = new Random();
-
+	public AssetShip assetManager;
 
 	@Override
 	public void create() {
-
-		gameScreen = new GameScreen();
+		this.assetManager = new AssetShip();
+		gameScreen = new GameScreen(this);
 		setScreen(gameScreen);
+
 	}
 
 	@Override

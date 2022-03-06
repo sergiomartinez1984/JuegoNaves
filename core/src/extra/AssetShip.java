@@ -1,17 +1,23 @@
 package extra;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.audio.Music;
+
 
 public class AssetShip {
 
-    private final AssetManager assetManager;
-    private final TextureAtlas textureAtlas;
+    private AssetManager assetManager;
+
 
     //Esta clase será la encargada de obtener los recursos de la carpeta assest de Android para poder utilizarlos en nuestro juego.
     //
-    public AssetShip(AssetManager assetManager, TextureAtlas textureAtlas) {
+    public AssetShip() {
         this.assetManager = new AssetManager();
-        this.textureAtlas = textureAtlas;
+        assetManager.load("arcadeGameMusic.mp3",Music.class);
+        assetManager.finishLoading();
+    }
+    public Music getMusicBg() {
+
+        return assetManager.get("arcadeGameMusic.mp3");
     }
 }

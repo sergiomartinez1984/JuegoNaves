@@ -13,9 +13,6 @@ public class Laser {
     //unidades del mundo por segundo como hicimos en la nave
     public float movementSpeed;
 
-
-
-
     //Graficos
     TextureRegion textureRegion;
 
@@ -31,9 +28,4 @@ public class Laser {
     public void draw(Batch batch){
         batch.draw(textureRegion,boundingBox.x,boundingBox.y,boundingBox.width,boundingBox.height);
     }
-
-  //  public Rectangle getBoundingBox(){
-  //      return boundingBox;
-  //  }
-
 }

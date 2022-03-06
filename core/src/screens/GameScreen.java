@@ -3,6 +3,8 @@ package screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,6 +29,7 @@ import actor.EnemyShip;
 import actor.Explosion;
 import actor.Laser;
 import actor.PlayerShip;
+import extra.AssetShip;
 
 class GameScreen implements Screen {
 
@@ -41,6 +43,10 @@ class GameScreen implements Screen {
     private final SpriteBatch batch;
     private TextureAtlas textureAtlas;
     private Texture explosionTexture;
+
+    //sonidos
+    private final Music musicbg;
+
 
 
     private TextureRegion[] background;
@@ -78,13 +84,17 @@ class GameScreen implements Screen {
     BitmapFont font;
     float margilVertical,hudLeftX,hudRightX,hudCentreX,hudRow1y,hudRow2y,hudSectionWidth;
 
-    GameScreen(){
+    GameScreen(Main main){
 
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
 
         //configuracion del texture Atlas
         textureAtlas = new TextureAtlas("images.atlas");
+
+        //reproduccion de los sonidos
+        this.musicbg = main.assetManager.getMusicBg();
+
 
         //Ajustes del fondo
         background = new TextureRegion[4];
@@ -95,7 +105,6 @@ class GameScreen implements Screen {
 
         backgroundHeight = WORLD_HEIGHT * 2;
         backgroundMaxScrollingSpeed = (float) WORLD_HEIGHT / 4;
-
 
         //Inicializar las regiones de texturas del fondo
 
@@ -114,7 +123,6 @@ class GameScreen implements Screen {
                 48,10,
                 0.8f,4,65,0.5f,
                 playerShipTextureRegion,playerShieldTextureRegion,playerLaserTextureRegion);
-
 
         enemyShipList = new LinkedList<>();
         playerLaserList = new LinkedList<>();
@@ -150,8 +158,6 @@ class GameScreen implements Screen {
         hudRow2y = hudRow1y - margilVertical - font.getCapHeight();
         hudSectionWidth = WORLD_WIDTH / 3;
     }
-
-
 
     @Override
     public void render(float deltaTime) {
@@ -205,7 +211,7 @@ class GameScreen implements Screen {
         enemySpawnTimer += deltaTime;
 
         if (enemySpawnTimer > timeBetweenEnemySpawns) {
-            enemyShipList.add(new EnemyShip(Spaceship.random.nextFloat() * (WORLD_WIDTH - 10) + 5,
+            enemyShipList.add(new EnemyShip(Main.random.nextFloat() * (WORLD_WIDTH - 10) + 5,
                     WORLD_HEIGHT - 5,
                     10, 10,
                     48, 2,
@@ -293,7 +299,6 @@ class GameScreen implements Screen {
 
         enemyShip.translate(xMove,yMove);
     }
-
 
     private void detectCollisions() {
         //Para cada jugador, verificamos si el laser se cruza con una nave enemiga
@@ -441,6 +446,6 @@ class GameScreen implements Screen {
     }
     @Override
     public void show() {
-
+        musicbg.play();
     }
 }

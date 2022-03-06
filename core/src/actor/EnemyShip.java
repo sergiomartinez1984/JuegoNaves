@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import screens.Spaceship;
+import screens.Main;
 
 public class EnemyShip extends Ship{
 
@@ -31,7 +31,7 @@ public class EnemyShip extends Ship{
     //creamos un metodo de direccion del vector aleatorio privado,porque solo se llamara desde el metodo de actualizacion
 
     private void randomizeDirectionVector(){
-        double rumbo = Spaceship.random.nextDouble()*6.283185;// DE 0 A 2 veces PI
+        double rumbo = Main.random.nextDouble()*6.283185;// DE 0 A 2 veces PI
         directionVector.x = (float)Math.sin(rumbo);
         directionVector.y = (float)Math.cos(rumbo);
 
