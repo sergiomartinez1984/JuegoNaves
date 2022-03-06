@@ -18,12 +18,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Locale;
-
 import actor.EnemyShip;
 import actor.Explosion;
 import actor.Laser;
@@ -45,7 +43,6 @@ public class GameScreen extends BaseScreen {
     //sonidos
     private Music musicbg;
     private Sound explosionSound;
-
 
 
     private TextureRegion[] background;
@@ -94,7 +91,7 @@ public class GameScreen extends BaseScreen {
 
         //reproduccion de los sonidos
         this.musicbg = main.assetManager.getMusicBg();
-        this.explosionSound = mainGame.assetManager.getSoundImpacto();
+        this.explosionSound = main.assetManager.getSoundImpacto();
 
         //Ajustes del fondo
         background = new TextureRegion[4];
@@ -120,7 +117,7 @@ public class GameScreen extends BaseScreen {
         //Configuracion de objetos del juego
         playerShip = new PlayerShip(WORLD_WIDTH/2,WORLD_HEIGHT/4,
                 10,10,
-                48,10,
+                48,1,
                 0.8f,4,65,0.5f,
                 playerShipTextureRegion,playerShieldTextureRegion,playerLaserTextureRegion);
 
@@ -336,7 +333,6 @@ public class GameScreen extends BaseScreen {
                                     new Rectangle(playerShip.boundingBox),
                                     1.6f));
 
-
                     playerShip.lives --;
                     if(playerShip.lives < 0){
                         mainGame.setScreen(new GameOverScreen(mainGame));
@@ -345,7 +341,6 @@ public class GameScreen extends BaseScreen {
                 laserListIterator.remove();
             }
         }
-
     }
 
     private void renderExplosions(float deltaTime){
@@ -359,11 +354,9 @@ public class GameScreen extends BaseScreen {
                 explosion.draw(batch);
             }
         }
-
     }
 
     private void renderLasers(float deltaTime){
-
         //crear nuevos lasers
         //lasers jugador
         if(playerShip.canFireLaser()){
@@ -389,7 +382,6 @@ public class GameScreen extends BaseScreen {
             if (laser.boundingBox.y > WORLD_HEIGHT){
                 iterator.remove();
             }
-
         }
         iterator = enemyLaserList.listIterator();
         while (iterator.hasNext()){
@@ -417,7 +409,6 @@ public class GameScreen extends BaseScreen {
         }
     }
 
-
     @Override
     public void resize(int width, int height) {
         viewport.update(width,height,true);
@@ -425,30 +416,14 @@ public class GameScreen extends BaseScreen {
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
     public void dispose() {
-
+        musicbg.stop();
     }
+
     @Override
     public void show() {
         this.musicbg.setLooping(true);
         musicbg.play();
         this.musicbg.setVolume(0.5f);
     }
-
-
 }

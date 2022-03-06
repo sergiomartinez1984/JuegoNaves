@@ -1,7 +1,11 @@
 package screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -11,13 +15,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameOverScreen extends BaseScreen {
   private final Camera camera;
-  private final Viewport viewport;
+  private Viewport viewport;
   private Stage stage;
   private Image gameover;
+  private World world;
 
 
   public GameOverScreen (Main main) {
     super(main);
+    this.world = new World(new Vector2(0, 0), false);
     camera = new OrthographicCamera();
       viewport = new StretchViewport(72,128,camera);
 
@@ -25,7 +31,13 @@ public class GameOverScreen extends BaseScreen {
       gameover = new Image();
 
       stage.addActor(gameover);
+  }
 
+  public void addGameOver() {
+    Image gameOver = new Image(mainGame.assetManager.getGameOver());
+    gameOver.setSize(640, 360);
+    gameOver.setPosition(0, 0);
+    this.stage.addActor(gameOver);
   }
 
   @Override
@@ -35,30 +47,14 @@ public class GameOverScreen extends BaseScreen {
 
 
   public void show(){
-
-  }
-
-  @Override
-  public void resize(int width, int height) {
-
-  }
-
-  @Override
-  public void pause() {
-
-  }
-
-  @Override
-  public void resume() {
-
-  }
-
-  @Override
-  public void hide() {
-
+    addGameOver();
   }
 
   public void render(float deltaTime) {
-
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    this.stage.draw();
+    if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(62)){
+      mainGame.setScreen(new GameScreen(mainGame));
+    }
   }
 }
