@@ -13,29 +13,28 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-public class GameOverScreen extends BaseScreen {
+public class InitialScreen extends BaseScreen {
   private final Camera camera;
   private Viewport viewport;
   private Stage stage;
-  private Image gameover;
+  private Image initial;
   private World world;
 
 
-  public GameOverScreen (Main main) {
+  public InitialScreen(Main main) {
     super(main);
       world = new World(new Vector2(0, 0), false);
       camera = new OrthographicCamera();
       viewport = new StretchViewport(72,128,camera);
 
       stage = new Stage(new FitViewport(640, 360));
-
   }
 
-  public void addGameOver() {
-    Image gameOver = new Image(mainGame.assetManager.getGameOver());
-    gameOver.setSize(640, 360);
-    gameOver.setPosition(0, 0);
-    stage.addActor(gameOver);
+  public void addInitialScreen() {
+    Image initialGame = new Image(mainGame.assetManager.getInitial());
+    initialGame.setSize(640, 360);
+    initialGame.setPosition(0, 0);
+    stage.addActor(initialGame);
   }
 
   @Override
@@ -45,7 +44,7 @@ public class GameOverScreen extends BaseScreen {
 
 
   public void show(){
-    addGameOver();
+    addInitialScreen();
   }
 
   public void render(float deltaTime) {

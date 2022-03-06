@@ -116,7 +116,7 @@ public class GameScreen extends BaseScreen {
         //Configuracion de objetos del juego
         playerShip = new PlayerShip(WORLD_WIDTH/2,WORLD_HEIGHT/4,
                 10,10,
-                48,1,
+                48,5,
                 0.8f,4,65,0.5f,
                 playerShipTextureRegion,playerShieldTextureRegion,playerLaserTextureRegion);
 
@@ -333,6 +333,7 @@ public class GameScreen extends BaseScreen {
                                     1.6f));
 
                     playerShip.lives --;
+                    playerShip.shield = 5;
                     explosionSound.play();
                     if(playerShip.lives < 0){
                         musicbg.stop();

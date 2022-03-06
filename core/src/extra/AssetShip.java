@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetShip {
     private String atlasGameover;
+    private String atlasInitial;
     private AssetManager assetManager;
     private TextureAtlas textureAtlas;
 
@@ -18,22 +19,28 @@ public class AssetShip {
     public AssetShip() {
         this.assetManager = new AssetManager();
         atlasGameover = "gameOver";
+        atlasInitial = "PressStart";
         assetManager.load("images.atlas", TextureAtlas.class);
         assetManager.load("arcadeGameMusic.mp3",Music.class);
         assetManager.load("explosion.mp3",Sound.class);
         assetManager.finishLoading();
 
         textureAtlas = assetManager.get("images.atlas");
-
     }
+
     public Music getMusicBg() {
         return assetManager.get("arcadeGameMusic.mp3");
     }
+
     public Sound getSoundImpacto() {
         return assetManager.get("explosion.mp3");
     }
 
     public TextureRegion getGameOver(){
         return textureAtlas.findRegion(atlasGameover);
+    }
+
+    public TextureRegion getInitial(){
+        return textureAtlas.findRegion(atlasInitial);
     }
 }

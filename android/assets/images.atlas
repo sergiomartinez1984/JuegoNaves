@@ -1,9 +1,16 @@
 
 images.png
-size: 5132, 1924
+size: 4943, 1924
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+PressStart
+  rotate: false
+  xy: 4330, 828
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 fondoespacio00
   rotate: false
   xy: 2166, 2
@@ -34,49 +41,49 @@ fondoespacio03
   index: -1
 enemyBlack1
   rotate: false
-  xy: 4330, 1155
+  xy: 4330, 511
   size: 93, 84
   orig: 93, 84
   offset: 0, 0
   index: -1
 gameOver
   rotate: false
-  xy: 4330, 1472
-  size: 800, 450
-  orig: 800, 450
+  xy: 4330, 1342
+  size: 600, 580
+  orig: 600, 580
   offset: 0, 0
   index: -1
 laserBlue13
   rotate: false
-  xy: 4589, 1413
+  xy: 4844, 1283
   size: 13, 57
   orig: 13, 57
   offset: 0, 0
   index: -1
 laserRed02
   rotate: false
-  xy: 4475, 1356
+  xy: 4932, 1885
   size: 9, 37
   orig: 9, 37
   offset: 0, 0
   index: -1
 playerShip2_blue
   rotate: false
-  xy: 4475, 1395
+  xy: 4475, 751
   size: 112, 75
   orig: 112, 75
   offset: 0, 0
   index: -1
 shield1
   rotate: false
-  xy: 4330, 1241
+  xy: 4330, 597
   size: 133, 108
   orig: 133, 108
   offset: 0, 0
   index: -1
 shield2
   rotate: false
-  xy: 4330, 1351
+  xy: 4330, 707
   size: 143, 119
   orig: 143, 119
   offset: 0, 0
