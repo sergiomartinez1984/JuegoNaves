@@ -2,9 +2,8 @@ package screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,9 +28,8 @@ import actor.EnemyShip;
 import actor.Explosion;
 import actor.Laser;
 import actor.PlayerShip;
-import extra.AssetShip;
 
-class GameScreen implements Screen {
+public class GameScreen extends BaseScreen {
 
     //declaraciones de todas las variables,de las distintas partes del juego
 
@@ -45,7 +43,8 @@ class GameScreen implements Screen {
     private Texture explosionTexture;
 
     //sonidos
-    private final Music musicbg;
+    private Music musicbg;
+    private Sound explosionSound;
 
 
 
@@ -85,6 +84,7 @@ class GameScreen implements Screen {
     float margilVertical,hudLeftX,hudRightX,hudCentreX,hudRow1y,hudRow2y,hudSectionWidth;
 
     GameScreen(Main main){
+        super(main);
 
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
@@ -94,7 +94,7 @@ class GameScreen implements Screen {
 
         //reproduccion de los sonidos
         this.musicbg = main.assetManager.getMusicBg();
-
+        this.explosionSound = mainGame.assetManager.getSoundImpacto();
 
         //Ajustes del fondo
         background = new TextureRegion[4];
@@ -132,7 +132,6 @@ class GameScreen implements Screen {
         batch = new SpriteBatch();
 
         prepareHUD();
-
     }
     //metodo
     private void prepareHUD() {
@@ -281,7 +280,6 @@ class GameScreen implements Screen {
     }
 
     private void moveEnemy(EnemyShip enemyShip,float deltaTime){
-
         float leftLimit,rightLimit,uplimit,downLimit;
         leftLimit = -enemyShip.boundingBox.x;
         downLimit = (float) WORLD_HEIGHT/2 - enemyShip.boundingBox.y;
@@ -317,6 +315,7 @@ class GameScreen implements Screen {
                                 new Explosion(explosionTexture,
                                         new Rectangle(enemyShip.boundingBox),
                                         0.7f));
+                       explosionSound = mainGame.assetManager.getSoundImpacto();
                         score += 150;
                    }
                        laserListIterator.remove();
@@ -337,8 +336,11 @@ class GameScreen implements Screen {
                                     new Rectangle(playerShip.boundingBox),
                                     1.6f));
 
-                    playerShip.shield = 10;
+
                     playerShip.lives --;
+                    if(playerShip.lives < 0){
+                        mainGame.setScreen(new GameOverScreen(mainGame));
+                    }
                 };
                 laserListIterator.remove();
             }
@@ -397,13 +399,10 @@ class GameScreen implements Screen {
             if (laser.boundingBox.y + laser.boundingBox.height< 0){
                 iterator.remove();
             }
-
         }
-
     }
 
     private void renderBackground(float deltaTime){
-
         backgroundOffSet[0] += deltaTime * backgroundMaxScrollingSpeed / 8;
         backgroundOffSet[1] += deltaTime * backgroundMaxScrollingSpeed / 4;
         backgroundOffSet[2] += deltaTime * backgroundMaxScrollingSpeed / 2;
@@ -446,6 +445,10 @@ class GameScreen implements Screen {
     }
     @Override
     public void show() {
+        this.musicbg.setLooping(true);
         musicbg.play();
+        this.musicbg.setVolume(0.5f);
     }
+
+
 }
