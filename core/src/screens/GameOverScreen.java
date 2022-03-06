@@ -23,8 +23,8 @@ public class GameOverScreen extends BaseScreen {
 
   public GameOverScreen (Main main) {
     super(main);
-    this.world = new World(new Vector2(0, 0), false);
-    camera = new OrthographicCamera();
+      world = new World(new Vector2(0, 0), false);
+      camera = new OrthographicCamera();
       viewport = new StretchViewport(72,128,camera);
 
       stage = new Stage(new FitViewport(640, 360));
@@ -37,7 +37,7 @@ public class GameOverScreen extends BaseScreen {
     Image gameOver = new Image(mainGame.assetManager.getGameOver());
     gameOver.setSize(640, 360);
     gameOver.setPosition(0, 0);
-    this.stage.addActor(gameOver);
+    stage.addActor(gameOver);
   }
 
   @Override
@@ -52,7 +52,7 @@ public class GameOverScreen extends BaseScreen {
 
   public void render(float deltaTime) {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    this.stage.draw();
+    stage.draw();
     if (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(62)){
       mainGame.setScreen(new GameScreen(mainGame));
     }

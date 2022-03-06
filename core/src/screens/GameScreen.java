@@ -28,7 +28,6 @@ import actor.Laser;
 import actor.PlayerShip;
 
 public class GameScreen extends BaseScreen {
-
     //declaraciones de todas las variables,de las distintas partes del juego
 
     //pantalla del juego
@@ -307,12 +306,12 @@ public class GameScreen extends BaseScreen {
                 if (enemyShip.intersects(laser.boundingBox)) {
                     //contacto con la nave enemiga
                    if(enemyShip.hitDetectAndDestroy(laser)) {
-                        enemyShipListIterator.remove();
+                       explosionSound.play();
+                       enemyShipListIterator.remove();
                         explosionsList.add(
                                 new Explosion(explosionTexture,
                                         new Rectangle(enemyShip.boundingBox),
                                         0.7f));
-                       explosionSound = mainGame.assetManager.getSoundImpacto();
                         score += 150;
                    }
                        laserListIterator.remove();
@@ -334,7 +333,9 @@ public class GameScreen extends BaseScreen {
                                     1.6f));
 
                     playerShip.lives --;
+                    explosionSound.play();
                     if(playerShip.lives < 0){
+                        musicbg.stop();
                         mainGame.setScreen(new GameOverScreen(mainGame));
                     }
                 };
@@ -417,7 +418,6 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-        musicbg.stop();
     }
 
     @Override
