@@ -28,7 +28,6 @@ public class GameOverScreen extends BaseScreen {
       viewport = new StretchViewport(72,128,camera);
 
       stage = new Stage(new FitViewport(640, 360));
-
   }
 
   public void addGameOver() {

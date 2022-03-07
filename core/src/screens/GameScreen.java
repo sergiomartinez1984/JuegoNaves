@@ -401,7 +401,6 @@ public class GameScreen extends BaseScreen {
         backgroundOffSet[1] += deltaTime * backgroundMaxScrollingSpeed / 4;
         backgroundOffSet[2] += deltaTime * backgroundMaxScrollingSpeed / 2;
         backgroundOffSet[3] += deltaTime * backgroundMaxScrollingSpeed ;
-
         for (int layer = 0 ; layer < backgroundOffSet.length ; layer ++){
             if (backgroundOffSet[layer] > WORLD_HEIGHT){
                 backgroundOffSet[layer] = 0;
