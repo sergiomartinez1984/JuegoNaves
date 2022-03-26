@@ -62,7 +62,7 @@ public class InitialScreen extends BaseScreen {
   private void setButtons() {
     skin = new Skin(Gdx.files.internal("button/glassy-ui.json"));
 
-    playButton = new TextButton("Jugar", skin);
+    playButton = new TextButton("Play", skin);
     playButton.setPosition(30, 25);
     playButton.setTransform(true);
     playButton.setScale(0.4f);
