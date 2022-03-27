@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,17 +13,19 @@ public class ConfigScreen extends BaseScreen {
 
     private Stage stage;
     private TextButton returnButton;
-    private TextButton musicButton;
+    private static TextButton musicButton;
     private TextButton soundButton;
     private Skin skin;
     private static boolean musicActivate = true;
     private static boolean soundActivate = true;
+    private static Color color;
 
     public ConfigScreen(Main mainGame) {
         super(mainGame);
 
         stage = new Stage();
         setButtons();
+        color = returnButton.getColor();
     }
 
     @Override
@@ -48,19 +51,19 @@ public class ConfigScreen extends BaseScreen {
         skin = new Skin(Gdx.files.internal("button/glassy-ui.json"));
 
         returnButton = new TextButton("Return", skin);
-        returnButton.setPosition(30, 25);
+        returnButton.setPosition(30, 100);
         returnButton.setTransform(true);
         returnButton.setScale(0.3f);
 
         musicButton = new TextButton("Music", skin);
-        musicButton.setPosition(100, 25);
+        musicButton.setPosition(100, 450);
         musicButton.setTransform(true);
-        musicButton.setScale(0.3f);
+        musicButton.setScale(0.5f);
 
         soundButton = new TextButton("Sound", skin);
-        soundButton.setPosition(170, 25);
+        soundButton.setPosition(100, 375);
         soundButton.setTransform(true);
-        soundButton.setScale(0.3f);
+        soundButton.setScale(0.5f);
 
         returnButton.addCaptureListener(new ChangeListener() {
             @Override
@@ -97,16 +100,20 @@ public class ConfigScreen extends BaseScreen {
     public void configurationMusic() {
         if (musicActivate == true) {
             musicActivate = false;
+            musicButton.setColor(Color.GRAY);
         } else {
             musicActivate = true;
+            musicButton.setColor(color);
         }
     }
 
     public void configurationSound() {
         if (soundActivate == true) {
             soundActivate = false;
+            soundButton.setColor(Color.GRAY);
         } else {
             soundActivate = true;
+            soundButton.setColor(color);
         }
     }
 
