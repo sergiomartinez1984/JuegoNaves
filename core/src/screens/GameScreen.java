@@ -33,7 +33,7 @@ public class GameScreen extends BaseScreen {
     // pantalla del juego
     private final Camera camera;
     private final Viewport viewport;
-   
+
     // graficos
     private final SpriteBatch batch;
     private TextureAtlas textureAtlas;
@@ -218,8 +218,8 @@ public class GameScreen extends BaseScreen {
             enemyShipList.add(new EnemyShip(Main.random.nextFloat() * (WORLD_WIDTH - 10) + 5,
                     WORLD_HEIGHT - 5,
                     10, 10,
-                    48, 2,
-                    0.3f, 5, 50, 0.8f,
+                    35, 2,
+                    0.3f, 4, 40, 01.5f,
                     enemyShipTextureRegion, enemyShieldTextureRegion, enemyLaserTextureRegion));
             enemySpawnTimer -= timeBetweenEnemySpawns;
         }
@@ -333,7 +333,15 @@ public class GameScreen extends BaseScreen {
                                 new Explosion(explosionTexture,
                                         new Rectangle(enemyShip.boundingBox),
                                         0.7f));
-                        score += 150;
+                        score += 100;
+                        if (score % 1000 == 0) {
+                            enemyShipListIterator.add(new EnemyShip(Main.random.nextFloat() * (WORLD_WIDTH - 10) + 5,
+                                    WORLD_HEIGHT - 5,
+                                    40, 40,
+                                    28, 20,
+                                    1f, 5, 30, 0.5f,
+                                    enemyShipTextureRegion, enemyShieldTextureRegion, enemyLaserTextureRegion));
+                        }
                     }
                     laserListIterator.remove();
                     break;
