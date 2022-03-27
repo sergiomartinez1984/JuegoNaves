@@ -23,6 +23,7 @@ public class AssetShip {
         atlasInitial = "fondoSpaceShip";
         assetManager.load("initialScreen/pantallas.atlas", TextureAtlas.class);
         assetManager.load("images.atlas", TextureAtlas.class);
+        assetManager.load("MainTheme.mp3",Music.class);
         assetManager.load("arcadeGameMusic.mp3",Music.class);
         assetManager.load("explosion.mp3",Sound.class);
         assetManager.finishLoading();
@@ -33,6 +34,10 @@ public class AssetShip {
 
     public Music getMusicBg() {
         return assetManager.get("arcadeGameMusic.mp3");
+    }
+
+    public Music getInitialMusic() {
+        return assetManager.get("MainTheme.mp3");
     }
 
     public Sound getSoundImpacto() {

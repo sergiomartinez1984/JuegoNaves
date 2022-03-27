@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,11 +20,13 @@ public class InitialScreen extends BaseScreen {
   private TextButton exitButton;
   private TextButton scoreButton;
   private Skin skin;
+  private Music musicbg;
 
   public InitialScreen(Main main) {
     super(main);
     camera = new OrthographicCamera();
-
+    this.musicbg = main.assetManager.getInitialMusic();
+    musicbg.play();
     stage = new Stage();
 
     setButtons();
@@ -75,6 +78,7 @@ public class InitialScreen extends BaseScreen {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
         mainGame.setScreen(new GameScreen(mainGame));
+        musicbg.stop();
       }
     });
 
