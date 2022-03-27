@@ -33,7 +33,7 @@ public class GameScreen extends BaseScreen {
     // pantalla del juego
     private final Camera camera;
     private final Viewport viewport;
-
+   
     // graficos
     private final SpriteBatch batch;
     private TextureAtlas textureAtlas;
@@ -80,13 +80,11 @@ public class GameScreen extends BaseScreen {
 
     GameScreen(Main main) {
         super(main);
-
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
         // configuracion del texture Atlas
         textureAtlas = new TextureAtlas("images.atlas");
-
         this.musicbg = main.assetManager.getMusicBg();
         // reproduccion de los sonidos
         if (configScreen.musicOnOff()) {
@@ -122,7 +120,7 @@ public class GameScreen extends BaseScreen {
         // Configuracion de objetos del juego
         playerShip = new PlayerShip(WORLD_WIDTH / 2, WORLD_HEIGHT / 4,
                 10, 10,
-                48, 5,
+                48, 1,
                 0.8f, 4, 65, 0.5f,
                 playerShipTextureRegion, playerShieldTextureRegion, playerLaserTextureRegion);
 
