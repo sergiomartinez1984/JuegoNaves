@@ -27,6 +27,18 @@ public class ConfigScreen extends BaseScreen {
         stage = new Stage();
         setButtons();
         color = returnButton.getColor();
+
+        if (musicActivate) {
+            musicButton.setColor(color);
+        } else {
+            musicButton.setColor(Color.GRAY);
+        }
+
+        if (soundActivate) {
+            soundButton.setColor(color);
+        } else {
+            soundButton.setColor(Color.GRAY);
+        }
     }
 
     @Override
@@ -51,18 +63,18 @@ public class ConfigScreen extends BaseScreen {
     private void setButtons() {
         skin = new Skin(Gdx.files.internal("button/glassy-ui.json"));
 
-        returnButton = new TextButton("Return", skin);
-        returnButton.setPosition(30, 100);
+        returnButton = new TextButton("Home", skin);
+        returnButton.setPosition(30, 30);
         returnButton.setTransform(true);
         returnButton.setScale(0.3f);
 
         musicButton = new TextButton("Music", skin);
-        musicButton.setPosition(100, 450);
+        musicButton.setPosition(100, 425);
         musicButton.setTransform(true);
         musicButton.setScale(0.5f);
 
         soundButton = new TextButton("Sound", skin);
-        soundButton.setPosition(100, 375);
+        soundButton.setPosition(100, 350);
         soundButton.setTransform(true);
         soundButton.setScale(0.5f);
 
