@@ -41,6 +41,7 @@ public class GameScreen extends BaseScreen {
 
     // sonidos
     private Music musicbg;
+    
     private Sound explosionSound;
     private ConfigScreen configScreen = new ConfigScreen(mainGame);
 
