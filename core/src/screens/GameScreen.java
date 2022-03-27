@@ -42,6 +42,7 @@ public class GameScreen extends BaseScreen {
     // sonidos
     private Music musicbg;
     private Sound explosionSound;
+    private ConfigScreen configScreen = new ConfigScreen(mainGame);
 
     private TextureRegion[] background;
     private float backgroundHeight;
@@ -86,9 +87,16 @@ public class GameScreen extends BaseScreen {
         // configuracion del texture Atlas
         textureAtlas = new TextureAtlas("images.atlas");
 
-        // reproduccion de los sonidos
         this.musicbg = main.assetManager.getMusicBg();
-        this.explosionSound = main.assetManager.getSoundImpacto();
+        // reproduccion de los sonidos
+        if (configScreen.musicOnOff()) {
+            this.musicbg.setLooping(true);
+            this.musicbg.setVolume(0.5f);
+            musicbg.play();
+        }
+        if (configScreen.soundOnOff()) {
+            this.explosionSound = main.assetManager.getSoundImpacto();
+        }
 
         // Ajustes del fondo
         background = new TextureRegion[4];
@@ -318,7 +326,10 @@ public class GameScreen extends BaseScreen {
                 if (enemyShip.intersects(laser.boundingBox)) {
                     // contacto con la nave enemiga
                     if (enemyShip.hitDetectAndDestroy(laser)) {
-                        explosionSound.play();
+                        try {
+                            explosionSound.play();
+                        } catch (Exception e) {
+                        }
                         enemyShipListIterator.remove();
                         explosionsList.add(
                                 new Explosion(explosionTexture,
@@ -346,7 +357,10 @@ public class GameScreen extends BaseScreen {
 
                     playerShip.lives--;
                     playerShip.shield = 5;
-                    explosionSound.play();
+                    try {
+                        explosionSound.play();
+                    } catch (Exception e) {
+                    }
                     if (playerShip.lives < 0) {
                         musicbg.stop();
                         mainGame.setScreen(new GameOverScreen(mainGame));
@@ -435,8 +449,6 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void show() {
-        this.musicbg.setLooping(true);
-        musicbg.play();
-        this.musicbg.setVolume(0.5f);
+
     }
 }
