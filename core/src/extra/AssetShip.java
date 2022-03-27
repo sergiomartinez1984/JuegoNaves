@@ -12,7 +12,7 @@ public class AssetShip {
     private String atlasInitial;
     private AssetManager assetManager;
     private TextureAtlas textureAtlas;
-    private TextureAtlas textureInitial;
+    private TextureAtlas texturePantallas;
 
 
     //Esta clase será la encargada de obtener los recursos de la carpeta assest de Android para poder utilizarlos en nuestro juego.
@@ -21,14 +21,14 @@ public class AssetShip {
         this.assetManager = new AssetManager();
         atlasGameover = "gameOver";
         atlasInitial = "fondoSpaceShip";
-        assetManager.load("initialScreen/initialBackground.atlas", TextureAtlas.class);
+        assetManager.load("initialScreen/pantallas.atlas", TextureAtlas.class);
         assetManager.load("images.atlas", TextureAtlas.class);
         assetManager.load("arcadeGameMusic.mp3",Music.class);
         assetManager.load("explosion.mp3",Sound.class);
         assetManager.finishLoading();
 
         textureAtlas = assetManager.get("images.atlas");
-        textureInitial = assetManager.get("initialScreen/initialBackground.atlas");
+        texturePantallas = assetManager.get("initialScreen/pantallas.atlas");
     }
 
     public Music getMusicBg() {
@@ -44,6 +44,11 @@ public class AssetShip {
     }
 
     public TextureRegion getInitial(){
-        return textureInitial.findRegion(atlasInitial);
+        return texturePantallas.findRegion(atlasInitial);
     }
+
+    public TextureRegion getConfig(){
+        return texturePantallas.findRegion("PantallaSettings");
+    }
+
 }

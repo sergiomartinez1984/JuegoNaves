@@ -1,0 +1,20 @@
+
+pantallas.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+PantallaSettings
+  rotate: false
+  xy: 804, 517
+  size: 482, 765
+  orig: 482, 765
+  offset: 0, 0
+  index: -1
+fondoSpaceShip
+  rotate: false
+  xy: 2, 2
+  size: 800, 1280
+  orig: 800, 1280
+  offset: 0, 0
+  index: -1

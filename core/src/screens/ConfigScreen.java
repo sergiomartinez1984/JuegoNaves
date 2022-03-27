@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -89,9 +90,10 @@ public class ConfigScreen extends BaseScreen {
     }
 
     private void addConfigScreen() {
-        // Image initialGame = new Image(mainGame.assetManager.getInitial());
-        // initialGame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Image screen = new Image(mainGame.assetManager.getConfig());
+        screen.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        stage.addActor(screen);
         stage.addActor(returnButton);
         stage.addActor(musicButton);
         stage.addActor(soundButton);
