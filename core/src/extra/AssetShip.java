@@ -40,7 +40,7 @@ public class AssetShip {
     }
 
     public TextureRegion getGameOver(){
-        return textureAtlas.findRegion(atlasGameover);
+        return texturePantallas.findRegion("PantallaGameOver");
     }
 
     public TextureRegion getInitial(){
