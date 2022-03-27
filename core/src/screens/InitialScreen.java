@@ -18,7 +18,6 @@ public class InitialScreen extends BaseScreen {
   private TextButton configButton;
   private TextButton exitButton;
   private TextButton scoreButton;
-
   private Skin skin;
 
   public InitialScreen(Main main) {
@@ -28,17 +27,6 @@ public class InitialScreen extends BaseScreen {
     stage = new Stage();
 
     setButtons();
-  }
-
-  public void addInitialScreen() {
-    Image initialGame = new Image(mainGame.assetManager.getInitial());
-    initialGame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-    stage.addActor(initialGame);
-    stage.addActor(playButton);
-    stage.addActor(scoreButton);
-    stage.addActor(configButton);
-    stage.addActor(exitButton);
   }
 
   @Override
@@ -99,6 +87,7 @@ public class InitialScreen extends BaseScreen {
     configButton.addCaptureListener(new ChangeListener() {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
+        mainGame.setScreen(new ConfigScreen(mainGame));
       }
     });
 
@@ -108,5 +97,16 @@ public class InitialScreen extends BaseScreen {
         System.exit(0);
       }
     });
+  }
+
+  private void addInitialScreen() {
+    Image initialGame = new Image(mainGame.assetManager.getInitial());
+    initialGame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+    stage.addActor(initialGame);
+    stage.addActor(playButton);
+    stage.addActor(scoreButton);
+    stage.addActor(configButton);
+    stage.addActor(exitButton);
   }
 }
