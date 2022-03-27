@@ -26,6 +26,18 @@ public class ConfigScreen extends BaseScreen {
         stage = new Stage();
         setButtons();
         color = returnButton.getColor();
+
+        if (musicActivate) {
+            musicButton.setColor(color);
+        } else {
+            musicButton.setColor(Color.GRAY);
+        }
+
+        if (soundActivate) {
+            soundButton.setColor(color);
+        } else {
+            soundButton.setColor(Color.GRAY);
+        }
     }
 
     @Override
