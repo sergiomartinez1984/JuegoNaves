@@ -131,6 +131,7 @@ public class ConfigScreen extends BaseScreen {
         }
     }
 
+
     public boolean soundOnOff() {
         return soundActivate;
     }

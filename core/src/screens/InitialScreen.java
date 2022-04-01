@@ -20,15 +20,24 @@ public class InitialScreen extends BaseScreen {
   private TextButton exitButton;
   private TextButton scoreButton;
   private Skin skin;
-  private Music musicbg;
+  private Music musicInitial;
+  private ConfigScreen configScreen = new ConfigScreen(mainGame);
 
   public InitialScreen(Main main) {
     super(main);
     camera = new OrthographicCamera();
-    this.musicbg = main.assetManager.getInitialMusic();
-    musicbg.play();
+    this.musicInitial = main.assetManager.getInitialMusic();
+
     stage = new Stage();
 
+    if (configScreen.musicOnOff()) {
+      musicInitial.play();
+      this.musicInitial.setLooping(true);
+      this.musicInitial.setVolume(0.5f);
+      musicInitial.play();
+    }else {
+      musicInitial.stop();
+    }
     setButtons();
   }
 
@@ -78,7 +87,7 @@ public class InitialScreen extends BaseScreen {
       @Override
       public void changed(ChangeEvent event, Actor actor) {
         mainGame.setScreen(new GameScreen(mainGame));
-        musicbg.stop();
+        musicInitial.stop();
       }
     });
 
